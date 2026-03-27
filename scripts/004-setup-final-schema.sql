@@ -1,0 +1,50 @@
+-- First, add missing student columns to players table
+ALTER TABLE players ADD COLUMN IF NOT EXISTS college VARCHAR(255);
+ALTER TABLE players ADD COLUMN IF NOT EXISTS department VARCHAR(255);
+ALTER TABLE players ADD COLUMN IF NOT EXISTS year_of_study VARCHAR(50);
+ALTER TABLE players ADD COLUMN IF NOT EXISTS contact_number VARCHAR(20);
+ALTER TABLE players ADD COLUMN IF NOT EXISTS email VARCHAR(255);
+
+-- Drop unused tables if they exist
+DROP TABLE IF EXISTS student_performance CASCADE;
+DROP TABLE IF EXISTS students CASCADE;
+
+-- Create round1_questions table
+CREATE TABLE IF NOT EXISTS round1_questions (
+  id SERIAL PRIMARY KEY,
+  type VARCHAR(20) NOT NULL DEFAULT 'mcq' CHECK (type IN ('mcq', 'scenario')),
+  difficulty VARCHAR(10) NOT NULL CHECK (difficulty IN ('easy', 'medium', 'hard')),
+  question TEXT NOT NULL,
+  scenario TEXT,
+  options JSONB NOT NULL DEFAULT '[]',
+  correct_answer INTEGER NOT NULL,
+  points INTEGER NOT NULL DEFAULT 10,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create round2_challenges table
+CREATE TABLE IF NOT EXISTS round2_challenges (
+  id SERIAL PRIMARY KEY,
+  difficulty VARCHAR(10) NOT NULL CHECK (difficulty IN ('easy', 'medium', 'hard')),
+  title VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  scenario TEXT,
+  schema TEXT,
+  base_table_data JSONB NOT NULL DEFAULT '[]',
+  test_cases JSONB NOT NULL DEFAULT '[]',
+  expected_keywords JSONB DEFAULT '[]',
+  total_points INTEGER NOT NULL DEFAULT 15,
+  time_limit INTEGER NOT NULL DEFAULT 180,
+  correct_query TEXT,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_round1_questions_difficulty ON round1_questions(difficulty);
+CREATE INDEX IF NOT EXISTS idx_round1_questions_active ON round1_questions(is_active);
+CREATE INDEX IF NOT EXISTS idx_round2_challenges_difficulty ON round2_challenges(difficulty);
+CREATE INDEX IF NOT EXISTS idx_round2_challenges_active ON round2_challenges(is_active);
