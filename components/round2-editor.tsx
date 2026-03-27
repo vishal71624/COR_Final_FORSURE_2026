@@ -923,11 +923,11 @@ export function Round2Editor() {
                           title={`Q${i + 1}${hasAnswer ? ' (written)' : ''}`}
                           className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                             isCurrent
-                              ? 'bg-neon-yellow text-black border-neon-yellow shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                              ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                               : hasAnswer
                                 ? hasResults
                                   ? 'bg-neon-green/25 text-neon-green border-neon-green/60 hover:bg-neon-green/35'
-                                  : 'bg-neon-yellow/25 text-neon-yellow border-neon-yellow/60 hover:bg-neon-yellow/35'
+                                  : 'bg-neon-orange/25 text-neon-orange border-neon-orange/60 hover:bg-neon-orange/35'
                                 : 'bg-muted/60 text-muted-foreground border-transparent hover:bg-muted hover:text-foreground'
                           }`}
                         >
@@ -964,7 +964,7 @@ export function Round2Editor() {
                           title={`Q${i + 1}${hasAnswer ? ' (written)' : ''}`}
                           className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                             isCurrent
-                              ? 'bg-neon-yellow text-black border-neon-yellow shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                              ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                               : hasAnswer
                                 ? hasResults
                                   ? 'bg-neon-green/25 text-neon-green border-neon-green/60 hover:bg-neon-green/35'
@@ -1005,7 +1005,7 @@ export function Round2Editor() {
                           title={`Q${i + 1}${hasAnswer ? ' (written)' : ''}`}
                           className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                             isCurrent
-                              ? 'bg-neon-yellow text-black border-neon-yellow shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                              ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                               : hasAnswer
                                 ? hasResults
                                   ? 'bg-neon-green/25 text-neon-green border-neon-green/60 hover:bg-neon-green/35'
@@ -1029,7 +1029,7 @@ export function Round2Editor() {
                 <span>Tested</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-2.5 h-2.5 rounded bg-neon-yellow"></div>
+                <div className="w-2.5 h-2.5 rounded bg-neon-blue"></div>
                 <span>Current</span>
               </div>
               <div className="flex items-center gap-1">

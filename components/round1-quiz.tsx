@@ -434,7 +434,7 @@ export function Round1Quiz() {
                             title={`Q${i + 1}${isAnswered ? ' (answered)' : ''}`}
                             className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                               isCurrent
-                                ? 'bg-primary text-primary-foreground border-primary shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                                ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                                 : isAnswered
                                   ? 'bg-neon-green/25 text-neon-green border-neon-green/60 hover:bg-neon-green/35'
                                   : 'bg-muted/60 text-muted-foreground border-transparent hover:bg-muted hover:text-foreground'
@@ -471,7 +471,7 @@ export function Round1Quiz() {
                             title={`Q${i + 1}${isAnswered ? ' (answered)' : ''}`}
                             className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                               isCurrent
-                                ? 'bg-primary text-primary-foreground border-primary shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                                ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                                 : isAnswered
                                   ? 'bg-neon-orange/25 text-neon-orange border-neon-orange/60 hover:bg-neon-orange/35'
                                   : 'bg-muted/60 text-muted-foreground border-transparent hover:bg-muted hover:text-foreground'
@@ -508,7 +508,7 @@ export function Round1Quiz() {
                             title={`Q${i + 1}${isAnswered ? ' (answered)' : ''}`}
                             className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                               isCurrent
-                                ? 'bg-primary text-primary-foreground border-primary shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                                ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                                 : isAnswered
                                   ? 'bg-destructive/25 text-destructive border-destructive/60 hover:bg-destructive/35'
                                   : 'bg-muted/60 text-muted-foreground border-transparent hover:bg-muted hover:text-foreground'
