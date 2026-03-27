@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import { Roboto, JetBrains_Mono } from 'next/font/google'
+import { Raleway, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 
-const roboto = Roboto({
+const raleway = Raleway({
   subsets: ['latin'],
   variable: '--font-sans',
-  weight: ['400', '500', '700', '900'],
+  weight: ['400', '500', '600', '700', '800', '900'],
 })
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
@@ -43,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+      <body className={`${raleway.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>

@@ -95,7 +95,7 @@
 }
 
 @theme inline {
-  --font-sans: 'Roboto', sans-serif;
+  --font-sans: 'Raleway', sans-serif;
   --font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
 
   --color-neon-blue: var(--neon-blue);
