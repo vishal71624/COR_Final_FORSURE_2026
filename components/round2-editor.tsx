@@ -45,8 +45,8 @@ function DataTable({ tableData }: { tableData: TableData }) {
   const rows = tableData?.rows || []
   return (
     <div className="rounded-lg border border-border/50 overflow-hidden">
-      <div className="bg-accent/10 px-3 py-2 border-b border-border/50">
-        <span className="font-mono text-sm font-medium text-accent">{tableData?.tableName}</span>
+      <div className="bg-secondary/20 px-3 py-2 border-b border-border/50">
+        <span className="font-mono text-sm font-medium text-foreground">{tableData?.tableName}</span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
@@ -56,7 +56,7 @@ function DataTable({ tableData }: { tableData: TableData }) {
                 <th key={idx} className="px-3 py-2 text-left font-medium text-foreground border-b border-border/30">
                   <div className="flex items-center gap-1">
                     <span>{col.name}</span>
-                    {col.isPrimaryKey && <span className="text-[10px] text-primary">(PK)</span>}
+                    {col.isPrimaryKey && <span className="text-[10px] text-neon-sky">(PK)</span>}
                     {col.isForeignKey && <span className="text-[10px] text-neon-orange">(FK)</span>}
                   </div>
                   <span className="text-[10px] text-muted-foreground font-normal">{col.type}</span>
