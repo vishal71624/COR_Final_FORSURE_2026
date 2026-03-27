@@ -1,0 +1,79 @@
+-- ============================================================
+-- ITRIX 2026 - ROUND 1: MEDIUM QUESTIONS (10 Questions)
+-- Section B | 20 Points Each | type = 'query'
+-- ============================================================
+
+INSERT INTO round1_questions 
+  (type, difficulty, question, scenario, options, correct_answer, points, is_active)
+VALUES
+
+-- Q1
+('query', 'medium', 
+ 'What will be the output of the given SQL query?',
+ 'Orders Table:\nOrderID | CustomerName | Product | Quantity | City\n1001 | Arun | Laptop | 2 | Chennai\n1002 | Priya | Mouse | 5 | Mumbai\n1003 | Karthik | Keyboard | 3 | Chennai\n1004 | Sneha | Monitor | 1 | Delhi\n1005 | Rahul | Laptop | 4 | Chennai\n\nSQL Query:\nSELECT CustomerName, SUM(Quantity) AS TotalQty\nFROM Orders\nWHERE City = ''Chennai''\nGROUP BY CustomerName\nHAVING SUM(Quantity) > 2;',
+ '["Arun-2, Karthik-3, Rahul-4", "Karthik-3, Rahul-4", "Rahul-4 only", "Arun-2, Rahul-4"]'::jsonb, 
+ 2, 20, TRUE),
+
+-- Q2
+('query', 'medium', 
+ 'Why does this SQL query fail?',
+ 'Employee Table:\nEmpID | Name | DeptID | Salary\nE01 | Aisha | D01 | 62000\nE02 | Vikram | D02 | 48000\nE03 | Meena | D01 | 71000\nE04 | Suresh | D03 | 55000\nE05 | Divya | D02 | 43000\n\nFaulty Query:\nSELECT DeptID, AVG(Salary)\nFROM Employee\nGROUP BY DeptID\nWHERE AVG(Salary) > 50000;',
+ '["AVG() cannot be used with GROUP BY", "WHERE clause is written after GROUP BY — it must come before GROUP BY", "WHERE cannot filter using aggregate functions; HAVING must be used instead, and WHERE must appear before GROUP BY", "DeptID cannot appear in SELECT alongside AVG()"]'::jsonb, 
+ 3, 20, TRUE),
+
+-- Q3
+('query', 'medium', 
+ 'How many rows will the output contain?',
+ 'Students Table:\nStudentID | Name | DeptID\nS01 | Ananya | D01\nS02 | Bala | D02\nS03 | Chandra | D03\n\nDepartments Table:\nDeptID | DeptName\nD01 | Computer Science\nD02 | Mathematics\n\nSQL Query:\nSELECT S.Name, D.DeptName\nFROM Students S\nINNER JOIN Departments D ON S.DeptID = D.DeptID;',
+ '["3 rows — all students are included", "2 rows — only Ananya and Bala, since Chandra''s DeptID D03 has no match in Departments", "1 row — only the first matching student", "0 rows — JOIN requires identical table sizes"]'::jsonb, 
+ 2, 20, TRUE),
+
+-- Q4
+('query', 'medium', 
+ 'What will be the Stock value of P01 (Keyboard) after this insert?',
+ 'Products Table (initial):\nProductID | ProductName | Stock\nP01 | Keyboard | 100\nP02 | Mouse | 50\nP03 | Monitor | 30\n\nTrigger:\nCREATE TRIGGER update_stock\nAFTER INSERT ON Orders\nFOR EACH ROW\nBEGIN\n  UPDATE Products\n  SET Stock = Stock - NEW.Quantity\n  WHERE ProductID = NEW.ProductID;\nEND;\n\nNew Insert into Orders: OrderID=O03, ProductID=P01, Quantity=25',
+ '["100", "90", "75", "65"]'::jsonb, 
+ 3, 20, TRUE),
+
+-- Q5
+('query', 'medium', 
+ 'Which employees will appear in the result?',
+ 'Salary Table:\nEmpID | Name | Department | Salary\nE01 | Arun | IT | 72000\nE02 | Brinda | IT | 65000\nE03 | Chandan | HR | 48000\nE04 | Deepa | Finance | 55000\nE05 | Elan | IT | 80000\n\nSQL Query:\nSELECT Name\nFROM Salary\nWHERE Salary > (SELECT AVG(Salary) FROM Salary);',
+ '["Arun, Elan", "Arun, Brinda, Elan", "Elan only", "Arun, Brinda, Deepa, Elan"]'::jsonb, 
+ 2, 20, TRUE),
+
+-- Q6
+('query', 'medium', 
+ 'What is wrong with this query?',
+ 'Books Table:\nBookID | Title | Author | Price\nB01 | DBMS Fundamentals | Navathe | 450\nB02 | Operating Systems | Silberschatz | 750\nB03 | Data Structures | Cormen | 620\nB04 | Computer Networks | Forouzan | 290\nB05 | Compiler Design | Aho | 510\n\nFaulty Query:\nSELECT Title, Price\nFROM Books\nWHERE Price BETWEEN 700 AND 300;',
+ '["BETWEEN cannot be used with numeric columns", "The BETWEEN range is reversed — lower bound must come first: BETWEEN 300 AND 700", "Price column cannot appear in both SELECT and WHERE", "Nothing is wrong — the query runs correctly"]'::jsonb, 
+ 2, 20, TRUE),
+
+-- Q7
+('query', 'medium', 
+ 'Which normal form is violated and what is the correct fix?',
+ 'Table:\nStudentID | StudentName | CourseID | CourseName | InstructorID | InstructorName | Grade\nS01 | Ananya | C01 | Database Systems | I01 | Dr. Ramesh | A\nS02 | Bala | C01 | Database Systems | I01 | Dr. Ramesh | B\nS03 | Chandra | C02 | OS Concepts | I02 | Prof. Leela | A\nS01 | Ananya | C02 | OS Concepts | I02 | Prof. Leela | C\n\nPrimary Key: (StudentID, CourseID)\nFDs: CourseID → CourseName, InstructorID, InstructorName',
+ '["1NF violated — split multi-valued cells", "2NF violated — CourseName, InstructorID, InstructorName partially depend on CourseID alone; decompose into separate Course and Enrollment tables", "3NF violated — Grade transitively depends on StudentID", "BCNF violated — InstructorName determines CourseID"]'::jsonb, 
+ 2, 20, TRUE),
+
+-- Q8
+('query', 'medium', 
+ 'What concurrency problem occurred, and which ACID property was violated?',
+ 'Accounts Table:\nAccID | HolderName | Balance\nA01 | Karthik | 10000\nA02 | Sneha | 5000\n\nConcurrent Transactions on A01:\nT1: Read 10000 → Write 7000 (deduct 3000)\nT2: Read 10000 → Write 8000 (deduct 2000)\nFinal Balance became 8000 instead of 5000.',
+ '["Dirty Read — Isolation was violated", "Lost Update — Isolation was violated (T2 overwrote T1''s committed write)", "Unrepeatable Read — Consistency was violated", "Phantom Read — Durability was violated"]'::jsonb, 
+ 2, 20, TRUE),
+
+-- Q9
+('query', 'medium', 
+ 'What situation has arisen between T1 and T2?',
+ 'Inventory Table:\nItemID | ItemName | Stock\nI01 | Laptop | 20\nI02 | Tablet | 15\nI03 | Charger | 50\n\nSchedule:\nt1: T1 Lock(I01) exclusive\nt2: T2 Lock(I02) exclusive\nt3: T1 Request Lock(I02) → WAITING\nt4: T2 Request Lock(I01) → WAITING',
+ '["Dirty read — T1 read uncommitted data from T2", "Deadlock — T1 waits for I02 (held by T2) and T2 waits for I01 (held by T1), creating a circular wait", "Starvation — T2 keeps getting priority over T1", "Cascading rollback — T1''s abort forced T2 to roll back"]'::jsonb, 
+ 2, 20, TRUE),
+
+-- Q10
+('query', 'medium', 
+ 'What is the mistake in this query?',
+ 'Customers Table:\nCustomerID | Name | City\nC01 | Arun | Chennai\nC02 | Priya | Bangalore\nC03 | Vikram | Chennai\n\nOrders Table:\nOrderID | CustomerID | Amount\nO01 | C01 | 1500\nO02 | C01 | 3200\nO03 | C03 | 800\n\nFaulty Query:\nSELECT DISTINCT C.Name\nFROM Customers C\nLEFT JOIN Orders O ON C.CustomerID = O.CustomerID\nWHERE O.OrderID = NULL;',
+ '["LEFT JOIN should be INNER JOIN to match customers with orders", "= NULL is wrong — NULL comparisons must use IS NULL or IS NOT NULL; also, the condition logic is inverted — it should be IS NOT NULL to find customers who have orders", "DISTINCT cannot be used with JOIN", "O.OrderID should be C.CustomerID in the WHERE clause"]'::jsonb, 
+ 2, 20, TRUE)
+ON CONFLICT DO NOTHING;

@@ -1,0 +1,68 @@
+
+
+1/1
+
+Next.js 16.2.0 (stale)
+Turbopack
+Recoverable Error
+
+
+Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+See more info here: https://nextjs.org/docs/messages/react-hydration-error
+
+
++
+Client
+-
+Server
+  ...
+    <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+      <RedirectBoundary>
+        <RedirectErrorBoundary router={{...}}>
+          <InnerLayoutRouter url="/leaderboard" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+            <SegmentViewNode type="page" pagePath="leaderboar...">
+              <SegmentTrieNode>
+              <ClientPageRoot Component={function PublicLeaderboardPage} serverProvidedParams={{...}}>
+                <PublicLeaderboardPage params={Promise} searchParams={Promise}>
+                  <div className="min-h-scre...">
+                    <div>
+                    <div>
+                    <div className="relative z-10">
+                      <header className="border-b b...">
+                        <div className="flex items...">
+                          <div>
+                          <div className="flex items...">
+                            <Button>
+                            <Button>
+                            <span className="text-xs te...">
++                             3:32:31 PM
+-                             10:02:30 AM
+                      ...
+            ...
+          ...
+app/leaderboard/page.tsx (115:15) @ PublicLeaderboardPage
+
+
+  113 |                 <span className="ml-2">Refresh</span>
+  114 |               </Button>
+> 115 |               <span className="text-xs text-muted-foreground">
+      |               ^
+  116 |                 Last: {lastRefresh.toLocaleTimeString()}
+  117 |               </span>
+  118 |             </div>
+Call Stack
+14
+
+Show 12 ignore-listed frame(s)
+span
+<anonymous>
+PublicLeaderboardPage
+app/leaderboard/page.tsx (115:15)

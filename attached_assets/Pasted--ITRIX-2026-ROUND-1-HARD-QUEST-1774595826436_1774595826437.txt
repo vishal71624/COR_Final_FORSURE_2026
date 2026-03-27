@@ -1,0 +1,44 @@
+-- ============================================================
+-- ITRIX 2026 - ROUND 1: HARD QUESTIONS (5 Questions)
+-- Section C | 30 Points Each | type = 'scenario'
+-- ============================================================
+
+INSERT INTO round1_questions 
+  (type, difficulty, question, scenario, options, correct_answer, points, is_active)
+VALUES
+
+-- Q1
+('scenario', 'hard', 
+ 'What problem occurs when the DBA deletes SH04, and which normal form does this table violate?',
+ 'Shipments Table:\nShipmentID | DriverID | DriverName | DriverPhone | RouteID | RouteName | Destination\nSH01 | D01 | Rajan | 9876543210 | R01 | Chennai–Madurai | Madurai\nSH02 | D02 | Sundar | 9123456789 | R02 | Chennai–Coimbatore | Coimbatore\nSH03 | D01 | Rajan | 9876543210 | R01 | Chennai–Madurai | Madurai\nSH04 | D03 | Kavya | 9988776655 | R03 | Chennai–Salem | Salem\n\nPrimary Key: ShipmentID\n\nFunctional Dependencies:\n• ShipmentID → DriverID, RouteID, Destination\n• DriverID → DriverName, DriverPhone\n• RouteID → RouteName\n\nThe DBA deletes SH04 — the only shipment for Driver D03 (Kavya).',
+ '["Insertion anomaly — violates 2NF because DriverName partially depends on ShipmentID", "Deletion anomaly — violates 3NF because DriverName and DriverPhone transitively depend on ShipmentID via DriverID, causing driver information to be permanently lost when their only shipment is deleted", "Deletion anomaly — violates 2NF because DriverID is not the primary key", "Update anomaly — violates BCNF because RouteID is a candidate key"]'::jsonb, 
+ 2, 30, TRUE),
+
+-- Q2
+('scenario', 'hard', 
+ 'What is the problem with this interleaved execution schedule?',
+ 'Accounts Table (initial):\nAccID | HolderName | Balance\nA01 | Karthik | 8000\nA02 | Sneha | 12000\n\nExecution Schedule:\nStep | T1 Operation | T2 Operation | Notes\n1 | Read(A01) | — | T1 reads 8000\n2 | — | Read(A01) | T2 reads 8000\n3 | Write(A01)=9000 | — | T1 adds ₹1000\n4 | Read(A02) | — | T1 reads 12000\n5 | — | Write(A01)=6000 | T2 deducts ₹2000\n6 | — | Read(A02) | T2 reads 12000\n7 | Write(A02)=11000 | — | T1 deducts ₹1000\n8 | — | Write(A02)=13000 | T2 adds ₹1000\n\nT1: Transfer ₹1000 from A02 to A01\nT2: Transfer ₹2000 from A01 to A02',
+ '["The schedule is serial and therefore always correct", "This schedule has a conflict — T1 and T2 both read A01 before either writes, causing a Lost Update on A01. T1''s write (9000) is overwritten by T2 (6000), losing T1''s deposit entirely", "T2 causes a dirty read because it reads A01 before T1 commits", "The schedule is conflict-serializable and produces a correct result"]'::jsonb, 
+ 2, 30, TRUE),
+
+-- Q3
+('scenario', 'hard', 
+ 'Who is correct and why?',
+ 'Timetable Table:\nProfessorID | CourseID | RoomNo | TimeSlot\nP01 | CS101 | R01 | Mon 9AM\nP02 | CS102 | R02 | Mon 9AM\nP01 | CS103 | R03 | Mon 11AM\nP03 | CS101 | R01 | Wed 9AM\n\nFunctional Dependencies:\n• ProfessorID, TimeSlot → CourseID, RoomNo\n• RoomNo, TimeSlot → ProfessorID, CourseID\n• CourseID, TimeSlot → ProfessorID, RoomNo\n\nColleague A says: "The only primary key is (ProfessorID, TimeSlot)."\nColleague B says: "There are three candidate keys, and the table violates BCNF."',
+ '["Colleague A is correct — only (ProfessorID, TimeSlot) can uniquely identify a row", "Colleague B is correct — all three combinations are candidate keys, and since every determinant is already a superkey, the table actually satisfies BCNF", "Colleague B is correct — all three are candidate keys, but the table violates BCNF because CourseID, TimeSlot is not a superkey", "Both are wrong — the primary key must include all four columns"]'::jsonb, 
+ 2, 30, TRUE),
+
+-- Q4
+('scenario', 'hard', 
+ 'When the system restarts after the crash, what should the recovery system do?',
+ 'Tables:\nInventory: ProductID=P01, Stock=50\nWallet: CustomerID=C01, Balance=3500\n\nTransaction T1 (Order by Ananya for 1 Wireless Earbud ₹1500):\nStep 1: UPDATE Inventory SET Stock = 49 → Done\nStep 2: UPDATE Wallet SET Balance = 2000 → Done\nStep 3: INSERT into Orders table → CRASH before execution\n\nThe system crashes after Step 2 but before Step 3.',
+ '["Commit the transaction as-is — Steps 1 and 2 are already done and should not be wasted", "Roll back Steps 1 and 2 to restore the original state — Atomicity demands all-or-nothing; since the transaction never fully committed, partial changes must be undone", "Keep Step 1 and 2 but retry Step 3 automatically — Durability guarantees committed changes survive", "Only roll back Step 2 (the wallet charge) since the order was never created"]'::jsonb, 
+ 2, 30, TRUE),
+
+-- Q5
+('scenario', 'hard', 
+ 'Which of the following correctly describes the impact of both changes on the PublicCatalog view and the mobile app?',
+ 'Products Table:\nProductID | ProductName | Category | CostPrice | SellingPrice | SupplierID\nP01 | Wireless Mouse | Electronics | 350 | 599 | S01\nP02 | Desk Organiser | Stationery | 120 | 249 | S02\nP03 | USB-C Hub | Electronics | 480 | 899 | S01\n\nPublicCatalog View:\nSELECT ProductName, SellingPrice FROM Products;\n\nChanges made by DBA:\nChange 1: Added new column ''DiscountPercent'' to Products table\nChange 2: Moved the physical storage of the Products table to a new faster SSD partition',
+ '["Both changes break the view and the app must be updated immediately", "Change 1 breaks the view since new columns are automatically added to existing views; Change 2 has no impact", "Neither change affects the PublicCatalog view or the mobile app — Change 1 is handled by logical data independence and Change 2 by physical data independence", "Change 2 breaks the app because the app connects directly to disk storage paths"]'::jsonb, 
+ 3, 30, TRUE)
+ON CONFLICT DO NOTHING;

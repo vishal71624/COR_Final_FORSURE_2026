@@ -1,0 +1,458 @@
+SQL Scenario-Based Questions (8 Questions)
+Q1 - Basic SELECT
+Scenario:
+A fitness app records steps walked by users daily.
+The company wants to find records where users walked more than 8000 steps.
+This helps identify active users.
+Task:
+Display user_id and steps where steps > 8000.
+Schema:
+CREATE TABLE Steps (record_id INT,user_id INT,steps INT);
+Correct Query:
+SELECT user_id, steps FROM Steps WHERE steps > 8000;
+Test Cases:
+Input: (1,101,9000),(2,102,7000)
+Output: 101 | 9000
+Hidden Test Cases:
+Edge: (1,201,8000)->Empty, (1,202,0)->Empty
+Q2 - GROUP BY
+Scenario:
+A music app tracks songs played by users.
+They want users who played more than 5 songs total.
+This helps identify active listeners.
+Task:
+Return user_id and total songs > 5.
+Schema:
+CREATE TABLE Listening (id INT,user_id INT,songs_played INT);
+Correct Query:
+SELECT user_id, SUM(songs_played) FROM Listening GROUP BY user_id HAVING SUM(songs_played) > 5;
+Test Cases:
+Input: (1,101,3),(2,101,4)
+Output: 101 | 7
+Hidden Test Cases:
+Edge: (1,201,5)->Empty, (1,202,0)->Empty
+Q3 - JOIN
+Scenario:
+An online store tracks orders and customers separately.
+To display order details with customer names, both tables are joined.
+Only matching records should appear.
+Task:
+Return order_id and customer_name.
+Schema:
+CREATE TABLE Orders(id INT,customer_id INT);
+CREATE TABLE Customers(id INT,name VARCHAR(50));
+Correct Query:
+SELECT o.id, c.name FROM Orders o JOIN Customers c ON o.customer_id = c.id;
+Test Cases:
+Input: Orders(1,10), Customers(10,'Ram')
+Output: 1 | Ram
+Hidden Test Cases:
+Edge: no match->empty, extra customer->ignored
+Q4 - SUBQUERY
+Scenario:
+A company stores employee salaries.
+They want employees earning above average salary.
+This helps identify high earners.
+Task:
+Return emp_id and salary > average.
+Schema:
+CREATE TABLE Employees(id INT,salary INT);
+Correct Query:
+SELECT id, salary FROM Employees WHERE salary > (SELECT AVG(salary) FROM Employees);
+Test Cases:
+Input: (1,3000),(2,6000)
+Output: 2 | 6000
+Hidden Test Cases:
+Edge: same salaries->empty, one high outlier->only that
+ 
+SQL Medium Scenario Questions (Selected)
+Q - JOIN + GROUP BY
+Scenario:
+An online store tracks customers and their orders in separate tables.
+Only orders marked as 'Completed' should be considered for spending analysis.
+The company wants to find customers whose total completed spending exceeds ₹3000.
+Task:
+Return customer_name and total_spent.
+Schema:
+CREATE TABLE Customers (customer_id INT, name VARCHAR(50));
+CREATE TABLE Orders (order_id INT, customer_id INT, amount INT, status VARCHAR(20));
+Correct Query:
+SELECT c.name, SUM(o.amount) AS total_spent
+FROM Customers c
+JOIN Orders o ON c.customer_id = o.customer_id
+WHERE o.status = 'Completed'
+GROUP BY c.name
+HAVING SUM(o.amount) > 3000;
+Test Cases:
+Customers: (1,'Arun'),(2,'Meena')
+Orders: (1,1,2000,'Completed'),(2,1,1500,'Completed'),(3,2,5000,'Pending')
+Output: Arun | 3500
+Hidden Test Cases:
+Ignore non-completed orders
+Boundary = 3000 should be excluded
+Q3 – DATE
+Scenario:
+A system tracks user logins with timestamps.
+Each user may log in multiple times on the same or different days.
+The company wants to identify users who have logged in more than once on the same day.
+Task:
+Return user_id and login_date.
+Schema:
+CREATE TABLE Logins (
+    user_id INT,
+    login_time DATETIME
+);
+Correct Query:
+SELECT user_id, DATE(login_time) AS login_date
+FROM Logins
+GROUP BY user_id, DATE(login_time)
+HAVING COUNT(*) > 1;
+Test Cases:
+INSERT INTO Logins VALUES
+(101, '2024-03-01 10:00:00'),
+(101, '2024-03-01 15:00:00'),
+(102, '2024-03-01 09:00:00'),
+(102, '2024-03-02 11:00:00');
+Output:
+101 | 2024-03-01
+INSERT INTO Logins VALUES
+(201, '2024-04-10 08:00:00'),
+(201, '2024-04-10 09:00:00'),
+(201, '2024-04-10 10:00:00'),
+(202, '2024-04-11 12:00:00');
+Output:
+201 | 2024-04-10
+Hidden Test Cases:
+INSERT INTO Logins VALUES
+(301, '2024-05-01 10:00:00'),
+(301, '2024-05-01 10:00:00');
+Output:
+301 | 2024-05-01
+INSERT INTO Logins VALUES
+(401, '2024-06-01 08:00:00'),
+(401, '2024-06-02 09:00:00'),
+(401, '2024-06-02 10:00:00');
+Output:
+401 | 2024-06-02
+ 
+ 
+3. (Peak vs Low Sales Per Day)
+Table: sales
+
+```
++---------------+------+
+
+| Column Name   | Type |
+
++---------------+------+
+
+| sale_id       | int  |
+
+| amount        | int  |
+
+| sale_date     | date |
+
++---------------+------+
+```
+
+sale_id is the unique key.
+Problem:
+For each day, calculate:
+
+* total amount of high-value sales (amount ≥ 1000)
+
+* total amount of low-value sales (amount < 1000)
+
+If no high/low sales exist for a date, display 0.
+Return:
+sale_date, high_sales, low_sales
+👉 Ordered by sale_date ASC
+Query:
+
+```
+SELECT 
+
+    sale_date,
+
+    SUM(CASE WHEN amount >= 1000 THEN amount ELSE 0 END) AS high_sales,
+
+    SUM(CASE WHEN amount < 1000 THEN amount ELSE 0 END) AS low_sales
+
+FROM sales
+
+GROUP BY sale_date
+
+ORDER BY sale_date;
+```
+
+ 
+HARD
+✅ 1. (Pair Logic – Same Salary but NOT Maximum)
+Scenario:
+A company tracks employee salaries.
+Some employees share the same salary.
+The company wants employees who:
+
+* Share the same salary with at least one other employee, AND
+
+* Their salary is NOT the highest salary in the company
+
+Task:
+Return distinct emp_id.
+Schema:
+
+```
+CREATE TABLE Employees (
+
+    emp_id INT,
+
+    salary INT
+
+);
+```
+
+Correct Query:
+
+```
+SELECT DISTINCT e1.emp_id
+
+FROM Employees e1
+
+JOIN Employees e2
+
+ON e1.salary = e2.salary
+
+AND e1.emp_id != e2.emp_id
+
+WHERE e1.salary < (
+
+    SELECT MAX(salary) FROM Employees
+
+);
+```
+
+Test Cases:
+
+```
+INSERT INTO Employees VALUES
+
+(1,5000),(2,5000),(3,7000);
+```
+
+Output:
+
+```
+1
+
+2
+```
+
+👉 5000 repeated and NOT max
+
+```
+INSERT INTO Employees VALUES
+
+(4,8000),(5,8000),(6,6000);
+```
+
+Output:
+
+```
+(empty)
+```
+
+👉 8000 repeated BUT it's max → exclude
+Hidden Test Cases:
+• All same salaries → empty (all are max)
+• Only one duplicate but also max → exclude
+• Multiple duplicate groups → only non-max group included
+2.(Premium Customers Investment Analysis)
+Table: Investments
+
+```
++--------------+-------+
+
+| Column Name  | Type  |
+
++--------------+-------+
+
+| user_id      | int   |
+
+| inv_2022     | float |
+
+| inv_2023     | float |
+
+| city         | varchar |
+
+| branch_id    | int   |
+
++--------------+-------+
+```
+
+user_id is the primary key.
+Each row contains investment details of a user.
+Problem:
+Write a query to find the total investment in 2023 (inv_2023) for users who satisfy BOTH conditions:
+
+1. Their inv_2022 value appears more than once (i.e., at least one other user has same inv_2022)
+
+2. They belong to a city that is unique (no other user is from the same city)
+
+Return:
+A single value:
+
+```
+total_investment_2023
+```
+
+👉 Rounded to 2 decimal places
+Example:
+Input:
+
+```
+Investments:
+
+(1,1000,2000,'Chennai',1)
+
+(2,1000,3000,'Mumbai',2)
+
+(3,2000,4000,'Delhi',1)
+
+(4,3000,5000,'Delhi',2)
+```
+
+Explanation:
+
+* user 1 & 2 → same inv_2022 = 1000 ✅
+
+* user 3 & 4 → city Delhi repeated ❌
+
+Valid users → 1, 2
+Output:
+
+```
+5000.00
+```
+
+✅ Correct Query:
+
+```
+SELECT ROUND(SUM(inv_2023), 2) AS total_investment_2023
+
+FROM Investments
+
+WHERE inv_2022 IN (
+
+    SELECT inv_2022
+
+    FROM Investments
+
+    GROUP BY inv_2022
+
+    HAVING COUNT(*) > 1
+
+)
+
+AND city IN (
+
+    SELECT city
+
+    FROM Investments
+
+    GROUP BY city
+
+    HAVING COUNT(*) = 1
+
+);
+```
+
+3. (Pattern Logic – Starts with A but NOT ending with Z)
+Scenario:
+A company stores product codes for inventory tracking.
+Some product codes follow specific patterns.
+The company wants products that:
+
+* Start with the letter 'A', AND
+
+* Do NOT end with the letter 'Z'
+
+Task:
+Return product_id.
+Schema:
+
+```
+CREATE TABLE Products (
+
+    product_id INT,
+
+    product_code VARCHAR(50)
+
+);
+```
+
+Correct Query:
+
+```
+SELECT product_id
+
+FROM Products
+
+WHERE product_code LIKE 'A%'
+
+AND product_code NOT LIKE '%Z';
+```
+
+Test Cases:
+
+```
+INSERT INTO Products VALUES
+
+(1,'A123Z'),
+
+(2,'A456'),
+
+(3,'B789'),
+
+(4,'A999Z');
+```
+
+Output:
+
+```
+2
+```
+
+👉 Starts with A and NOT ending with Z
+
+```
+INSERT INTO Products VALUES
+
+(5,'A111'),
+
+(6,'A222'),
+
+(7,'C333');
+```
+
+Output:
+
+```
+5
+
+6
+```
+
+👉 Multiple valid matches
+Hidden Test Cases:
+• Starts with A and ends with Z → exclude
+• No product starts with A → empty
+• Only one valid product → return that
+ 
+ 
+ 
+iNSERT ONE BY ONE
+Give query one by one i ask
+Each question 2 test cases and 2 hiddencases for easy
+3 test cases and 3 hiddencases for medium
+4 test cases and 4 hiddencases for hard
+Insert in round 2

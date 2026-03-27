@@ -1,0 +1,132 @@
+-- ============================================================
+-- ITRIX 2026 - ROUND 1: HARD QUESTIONS (Section C)
+-- 5 Questions | 30 Points Each | type = 'scenario'
+-- New Format: Full scenario with table data in 'scenario' column
+-- ============================================================
+
+INSERT INTO round1_questions 
+  (type, difficulty, question, scenario, options, correct_answer, points, is_active)
+VALUES
+
+-- Q1
+('scenario', 'hard',
+ 'What problem occurs when the DBA deletes SH04, and which normal form does this table violate?',
+ 'A logistics company stores all delivery data in a single table called Shipments.
+The table looks clean at first glance — each row has a unique ShipmentID.
+But when the database administrator tries to delete a shipment, she realises something unexpected is also getting erased from the system.
+
+Shipments Table:
+ShipmentID | DriverID | DriverName | DriverPhone | RouteID | RouteName | Destination
+SH01 | D01 | Rajan | 9876543210 | R01 | Chennai–Madurai | Madurai
+SH02 | D02 | Sundar | 9123456789 | R02 | Chennai–Coimbatore | Coimbatore
+SH03 | D01 | Rajan | 9876543210 | R01 | Chennai–Madurai | Madurai
+SH04 | D03 | Kavya | 9988776655 | R03 | Chennai–Salem | Salem
+
+Primary Key: ShipmentID
+Functional Dependencies observed:
+• ShipmentID → DriverID, RouteID, Destination
+• DriverID → DriverName, DriverPhone
+• RouteID → RouteName
+
+The DBA deletes SH04 — the only shipment assigned to Driver D03 (Kavya).',
+ '["Insertion anomaly — violates 2NF because DriverName partially depends on ShipmentID", "Deletion anomaly — violates 3NF because DriverName and DriverPhone transitively depend on ShipmentID via DriverID, causing driver information to be permanently lost when their only shipment is deleted", "Deletion anomaly — violates 2NF because DriverID is not the primary key", "Update anomaly — violates BCNF because RouteID is a candidate key"]'::jsonb,
+ 2, 30, TRUE),
+
+-- Q2
+('scenario', 'hard',
+ 'What is the problem with this interleaved execution schedule?',
+ 'A banking system processes two transactions simultaneously on two accounts.
+The DBA captures the exact execution schedule below.
+
+Accounts Table (initial state):
+AccID | HolderName | Balance (₹)
+A01 | Karthik | 8000
+A02 | Sneha | 12000
+
+Execution Schedule:
+Step | T1 Operation | T2 Operation | Notes
+1 | Read(A01) | — | T1 reads A01 = 8000
+2 | — | Read(A01) | T2 also reads A01 = 8000
+3 | Write(A01) = 9000 | — | T1 adds ₹1000 to A01
+4 | Read(A02) | — | T1 reads A02 = 12000
+5 | — | Write(A01) = 6000 | T2 deducts ₹2000 from A01
+6 | — | Read(A02) | T2 reads A02 = 12000
+7 | Write(A02) = 11000 | — | T1 deducts ₹1000 from A02
+8 | — | Write(A02) = 13000 | T2 adds ₹1000 to A02
+
+T1: Transfer ₹1000 from A02 to A01.  
+T2: Transfer ₹2000 from A01 to A02.',
+ '["The schedule is serial and therefore always correct", "This schedule has a conflict — T1 and T2 both read A01 before either writes, causing a Lost Update on A01. T1''s write (9000) is overwritten by T2 (6000), losing T1''s deposit entirely", "T2 causes a dirty read because it reads A01 before T1 commits", "The schedule is conflict-serializable and produces a correct result"]'::jsonb,
+ 2, 30, TRUE),
+
+-- Q3
+('scenario', 'hard',
+ 'Who is correct and why?',
+ 'A university timetable committee designs a table to track which professor teaches which course, in which room, and at what time.
+
+Timetable Table:
+ProfessorID | CourseID | RoomNo | TimeSlot
+P01 | CS101 | R01 | Mon 9AM
+P02 | CS102 | R02 | Mon 9AM
+P01 | CS103 | R03 | Mon 11AM
+P03 | CS101 | R01 | Wed 9AM
+
+Known rules (functional dependencies):
+• ProfessorID, TimeSlot → CourseID, RoomNo
+• RoomNo, TimeSlot → ProfessorID, CourseID
+• CourseID, TimeSlot → ProfessorID, RoomNo
+
+Colleague A says: "The only primary key is (ProfessorID, TimeSlot)."
+Colleague B says: "There are three candidate keys, and the table violates BCNF."',
+ '["Colleague A is correct — only (ProfessorID, TimeSlot) can uniquely identify a row", "Colleague B is correct — all three combinations are candidate keys, and since every determinant is already a superkey, the table actually satisfies BCNF", "Colleague B is correct — all three are candidate keys, but the table violates BCNF because CourseID, TimeSlot is not a superkey", "Both are wrong — the primary key must include all four columns"]'::jsonb,
+ 2, 30, TRUE),
+
+-- Q4
+('scenario', 'hard',
+ 'When the system restarts after the crash, what should the recovery system do?',
+ 'An e-commerce platform processes an order that involves three steps: deducting the item from inventory, charging the customer''s wallet, and creating an order record. The system crashes at different points during execution.
+
+Tables involved:
+Inventory:
+ProductID | ProductName | Stock
+P01 | Wireless Earbuds | 50
+
+Wallet:
+CustomerID | Name | Balance (₹)
+C01 | Ananya | 3500
+
+Transaction T1 — Order by Ananya (C01) for 1 Wireless Earbud at ₹1500:
+
+Step | Operation | Status
+1 | UPDATE Inventory: Stock(P01) = 49 | Done
+2 | UPDATE Wallet: Balance(C01) = 2000 | Done
+3 | INSERT into Orders table | CRASH before this step
+
+The system crashes after Step 2 but before Step 3.',
+ '["Commit the transaction as-is — Steps 1 and 2 are already done and should not be wasted", "Roll back Steps 1 and 2 to restore the original state — Atomicity demands all-or-nothing; since the transaction never fully committed, partial changes must be undone", "Keep Step 1 and 2 but retry Step 3 automatically — Durability guarantees committed changes survive", "Only roll back Step 2 (the wallet charge) since the order was never created"]'::jsonb,
+ 2, 30, TRUE),
+
+-- Q5
+('scenario', 'hard',
+ 'Which of the following correctly describes the impact of both changes on the PublicCatalog view and the mobile app?',
+ 'A retail company has a Products table and exposes a view called PublicCatalog to its mobile app — showing only product name and price.
+The DBA then makes two separate changes to the underlying Products table.
+
+Products Table (base table):
+ProductID | ProductName | Category | CostPrice (₹) | SellingPrice (₹) | SupplierID
+P01 | Wireless Mouse | Electronics | 350 | 599 | S01
+P02 | Desk Organiser | Stationery | 120 | 249 | S02
+P03 | USB-C Hub | Electronics | 480 | 899 | S01
+
+PublicCatalog View (used by the mobile app):
+ProductName | SellingPrice (₹)
+Wireless Mouse | 599
+Desk Organiser | 249
+USB-C Hub | 899
+
+The DBA makes the following two changes to the Products table:
+Change 1: A new column ''DiscountPercent'' is added to the Products table
+Change 2: The physical storage of the table is moved to a new faster SSD partition on the server.',
+ '["Both changes break the view and the app must be updated immediately", "Change 1 breaks the view since new columns are automatically added to existing views; Change 2 has no impact", "Neither change affects the PublicCatalog view or the mobile app — Change 1 is handled by logical data independence (views are isolated from schema additions) and Change 2 is handled by physical data independence (apps are isolated from storage changes)", "Change 2 breaks the app because the app connects directly to disk storage paths"]'::jsonb,
+ 3, 30, TRUE)
+ON CONFLICT DO NOTHING;
