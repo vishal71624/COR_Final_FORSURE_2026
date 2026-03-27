@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import { Montserrat, JetBrains_Mono } from 'next/font/google'
+import { Raleway, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 
-const montserrat = Montserrat({
+const raleway = Raleway({
   subsets: ['latin'],
   variable: '--font-sans',
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700', '800', '900'],
 })
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
@@ -43,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+      <body className={`${raleway.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>

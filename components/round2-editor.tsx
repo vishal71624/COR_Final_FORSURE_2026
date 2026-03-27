@@ -45,8 +45,8 @@ function DataTable({ tableData }: { tableData: TableData }) {
   const rows = tableData?.rows || []
   return (
     <div className="rounded-lg border border-border/50 overflow-hidden">
-      <div className="bg-accent/10 px-3 py-2 border-b border-border/50">
-        <span className="font-mono text-sm font-medium text-accent">{tableData?.tableName}</span>
+      <div className="bg-secondary/20 px-3 py-2 border-b border-border/50">
+        <span className="font-mono text-sm font-medium text-foreground">{tableData?.tableName}</span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
@@ -56,7 +56,7 @@ function DataTable({ tableData }: { tableData: TableData }) {
                 <th key={idx} className="px-3 py-2 text-left font-medium text-foreground border-b border-border/30">
                   <div className="flex items-center gap-1">
                     <span>{col.name}</span>
-                    {col.isPrimaryKey && <span className="text-[10px] text-primary">(PK)</span>}
+                    {col.isPrimaryKey && <span className="text-[10px] text-neon-sky">(PK)</span>}
                     {col.isForeignKey && <span className="text-[10px] text-neon-orange">(FK)</span>}
                   </div>
                   <span className="text-[10px] text-muted-foreground font-normal">{col.type}</span>
@@ -766,7 +766,7 @@ export function Round2Editor() {
               <>
                 <Button
                   onClick={enterFullscreen}
-                  className="w-full h-11 bg-neon-yellow text-black hover:bg-neon-yellow/90 font-semibold shadow-md shadow-neon-yellow/20"
+                  className="w-full h-11 bg-neon-blue text-white hover:bg-neon-blue/90 font-semibold shadow-md shadow-neon-blue/20"
                 >
                   <Maximize className="w-4 h-4 mr-2" />
                   Start
@@ -923,11 +923,11 @@ export function Round2Editor() {
                           title={`Q${i + 1}${hasAnswer ? ' (written)' : ''}`}
                           className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                             isCurrent
-                              ? 'bg-neon-yellow text-black border-neon-yellow shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                              ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                               : hasAnswer
                                 ? hasResults
                                   ? 'bg-neon-green/25 text-neon-green border-neon-green/60 hover:bg-neon-green/35'
-                                  : 'bg-neon-yellow/25 text-neon-yellow border-neon-yellow/60 hover:bg-neon-yellow/35'
+                                  : 'bg-neon-orange/25 text-neon-orange border-neon-orange/60 hover:bg-neon-orange/35'
                                 : 'bg-muted/60 text-muted-foreground border-transparent hover:bg-muted hover:text-foreground'
                           }`}
                         >
@@ -964,7 +964,7 @@ export function Round2Editor() {
                           title={`Q${i + 1}${hasAnswer ? ' (written)' : ''}`}
                           className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                             isCurrent
-                              ? 'bg-neon-yellow text-black border-neon-yellow shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                              ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                               : hasAnswer
                                 ? hasResults
                                   ? 'bg-neon-green/25 text-neon-green border-neon-green/60 hover:bg-neon-green/35'
@@ -1005,7 +1005,7 @@ export function Round2Editor() {
                           title={`Q${i + 1}${hasAnswer ? ' (written)' : ''}`}
                           className={`size-6 shrink-0 rounded-md flex items-center justify-center font-medium text-[10px] transition-all duration-150 border ${
                             isCurrent
-                              ? 'bg-neon-yellow text-black border-neon-yellow shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
+                              ? 'bg-neon-blue text-white border-neon-blue shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25)]'
                               : hasAnswer
                                 ? hasResults
                                   ? 'bg-neon-green/25 text-neon-green border-neon-green/60 hover:bg-neon-green/35'
@@ -1029,7 +1029,7 @@ export function Round2Editor() {
                 <span>Tested</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="w-2.5 h-2.5 rounded bg-neon-yellow"></div>
+                <div className="w-2.5 h-2.5 rounded bg-neon-blue"></div>
                 <span>Current</span>
               </div>
               <div className="flex items-center gap-1">

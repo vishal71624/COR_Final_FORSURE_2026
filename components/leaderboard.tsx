@@ -293,11 +293,11 @@ function PlayerRankTable({ entries, scoreKey, label, isLoading, animate, current
                   <div className="hidden md:flex items-center gap-4 text-sm">
                     <div className="text-left">
                       <p className="text-xs text-muted-foreground">Round 1</p>
-                      <p className="font-mono text-primary">{player.round1Score}</p>
+                      <p className="font-mono text-foreground">{player.round1Score}</p>
                     </div>
                     <div className="text-left">
                       <p className="text-xs text-muted-foreground">Round 2</p>
-                      <p className="font-mono text-accent">{player.round2Score}</p>
+                      <p className="font-mono text-foreground">{player.round2Score}</p>
                     </div>
                   </div>
                 )}
@@ -314,7 +314,7 @@ function PlayerRankTable({ entries, scoreKey, label, isLoading, animate, current
           })}
           {isLoading && entries.length === 0 && (
             <div className="p-12 text-center text-muted-foreground">
-              <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-primary" />
+              <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-neon-blue" />
               <p>Loading leaderboard...</p>
             </div>
           )}
@@ -391,11 +391,11 @@ function TeamRankTable({ entries, scoreKey, label, isLoading, animate, myTeamCod
                   <div className="hidden md:flex items-center gap-4 text-sm">
                     <div className="text-left">
                       <p className="text-xs text-muted-foreground">R1 Avg</p>
-                      <p className="font-mono text-primary">{entry.round1Avg}</p>
+                      <p className="font-mono text-foreground">{entry.round1Avg}</p>
                     </div>
                     <div className="text-left">
                       <p className="text-xs text-muted-foreground">R2 Avg</p>
-                      <p className="font-mono text-accent">{entry.round2Avg}</p>
+                      <p className="font-mono text-foreground">{entry.round2Avg}</p>
                     </div>
                   </div>
                 )}
@@ -414,7 +414,7 @@ function TeamRankTable({ entries, scoreKey, label, isLoading, animate, myTeamCod
           })}
           {isLoading && entries.length === 0 && (
             <div className="p-12 text-center text-muted-foreground">
-              <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-primary" />
+              <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-neon-blue" />
               <p>Loading leaderboard...</p>
             </div>
           )}

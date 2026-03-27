@@ -327,11 +327,11 @@ function PlayerTable({ entries, scoreKey, label, isLoading, autoRefresh }: {
                 <div className="hidden md:flex items-center gap-6 text-sm">
                   <div className="text-left">
                     <p className="text-xs text-muted-foreground">Round 1</p>
-                    <p className="font-mono text-lg text-primary">{player.round1Score}</p>
+                    <p className="font-mono text-lg text-foreground">{player.round1Score}</p>
                   </div>
                   <div className="text-left">
                     <p className="text-xs text-muted-foreground">Round 2</p>
-                    <p className="font-mono text-lg text-accent">{player.round2Score}</p>
+                    <p className="font-mono text-lg text-foreground">{player.round2Score}</p>
                   </div>
                 </div>
               )}
@@ -348,7 +348,7 @@ function PlayerTable({ entries, scoreKey, label, isLoading, autoRefresh }: {
 
           {isLoading && entries.length === 0 && (
             <div className="p-12 text-center text-muted-foreground">
-              <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-primary" />
+              <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-neon-blue" />
               <p>Loading leaderboard...</p>
             </div>
           )}
@@ -513,11 +513,11 @@ function TeamTable({ entries, scoreKey, label, isLoading, autoRefresh }: {
                 <div className="hidden md:flex items-center gap-6 text-sm">
                   <div className="text-left">
                     <p className="text-xs text-muted-foreground">R1 Avg</p>
-                    <p className="font-mono text-lg text-primary">{team.round1Avg}</p>
+                    <p className="font-mono text-lg text-foreground">{team.round1Avg}</p>
                   </div>
                   <div className="text-left">
                     <p className="text-xs text-muted-foreground">R2 Avg</p>
-                    <p className="font-mono text-lg text-accent">{team.round2Avg}</p>
+                    <p className="font-mono text-lg text-foreground">{team.round2Avg}</p>
                   </div>
                 </div>
               )}
@@ -538,7 +538,7 @@ function TeamTable({ entries, scoreKey, label, isLoading, autoRefresh }: {
 
           {isLoading && entries.length === 0 && (
             <div className="p-12 text-center text-muted-foreground">
-              <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-primary" />
+              <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-neon-blue" />
               <p>Loading team leaderboard...</p>
             </div>
           )}
