@@ -334,7 +334,7 @@ export function Round1Quiz() {
 
             <Button
               onClick={enterFullscreen}
-              className="w-full h-11 bg-neon-red text-white hover:bg-neon-red/90 font-semibold shadow-md shadow-neon-red/20"
+              className="w-full h-11 bg-neon-blue text-white hover:bg-neon-blue/90 font-semibold shadow-md shadow-neon-blue/20"
             >
               <Maximize className="w-4 h-4 mr-2" />
               Start

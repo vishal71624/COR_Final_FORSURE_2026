@@ -766,7 +766,7 @@ export function Round2Editor() {
               <>
                 <Button
                   onClick={enterFullscreen}
-                  className="w-full h-11 bg-neon-yellow text-black hover:bg-neon-yellow/90 font-semibold shadow-md shadow-neon-yellow/20"
+                  className="w-full h-11 bg-neon-blue text-white hover:bg-neon-blue/90 font-semibold shadow-md shadow-neon-blue/20"
                 >
                   <Maximize className="w-4 h-4 mr-2" />
                   Start
