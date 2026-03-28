@@ -55,9 +55,7 @@ export function LandingPage() {
               <span className="text-muted-foreground/40 mx-3 md:mx-5 font-light" style={{ fontSize: 'clamp(1.8rem, 5.5vw, 4.5rem)' }}>or</span>
               <span className="text-gradient-primary">ROLLBACK</span>
             </h1>
-            <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-              Two-round database competition — MCQ quiz followed by a live SQL coding arena.
-            </p>
+
           </div>
 
           {/* CTA */}
